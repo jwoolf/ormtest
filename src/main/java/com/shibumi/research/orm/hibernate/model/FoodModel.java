@@ -15,16 +15,16 @@ public class FoodModel {
     @Column(name = "food")
     private String m_food;
 
-    @Column(name = "group")
-    private String m_group;
+    @Column(name = "label")
+    private String m_label;
 
     @Column(name = "calories")
-    private String m_calories;
+    private int m_calories;
 
 
-    public FoodModel(String food, String group, String calories) {
+    public FoodModel(String food, String label, int calories) {
         m_food = food;
-        m_group = group;
+        m_label = label;
         m_calories = calories;
     }
 
@@ -44,19 +44,19 @@ public class FoodModel {
         m_food = food;
     }
 
-    public String getGroup() {
-        return m_group;
+    public String getLabel() {
+        return m_label;
     }
 
-    public void setGroup(String group) {
-        m_group = group;
+    public void setGroup(String label) {
+        m_label = label;
     }
 
-    public String getCalories() {
+    public int getCalories() {
         return m_calories;
     }
 
-    public void setCalories(String calories) {
+    public void setCalories(int calories) {
         m_calories = calories;
     }
 
