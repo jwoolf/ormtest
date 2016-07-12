@@ -1,0 +1,54 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd"
+       xmlns:tx="http://www.springframework.org/schema/tx">
+
+    <import resource="classpath:default-ebean-server.xml"/>
+
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!-- using dumb driver manager for experimentation -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- ebean setup -->
+
+    <bean id="serverConfig" parent="defaultEbeanServerConfig">
+        <property name="name" value="ormtest"/>
+        <property name="classes">
+            <list>
+                <value>com.shibumi.research.orm.ebean.model.AnimalModel</value>
+            </list>
+        </property>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="ddlGenerate" value="false"/>
+        <property name="ddlRun" value="false"/>
+    </bean>
+
+    <bean id="ebeanServer" class="com.avaje.ebean.springsupport.factory.EbeanServerFactoryBean">
+        <property name="serverConfig" ref="serverConfig"/>
+    </bean>
+
+    <bean id="animalRepository" class="com.shibumi.research.orm.ebean.AnimalRepository">
+        <property name="ebeanServer" ref="ebeanServer"/>
+    </bean>
+
+
+
+
+</beans>

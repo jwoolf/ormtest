@@ -123,6 +123,19 @@
             <version>19.0</version>
         </dependency>
 
+        <!-- utilities.spring -->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.3.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>4.3.1.RELEASE</version>
+        </dependency>
+
         <!-- logging -->
 
         <dependency>
@@ -171,6 +184,11 @@
             <groupId>org.avaje.ebeanorm</groupId>
             <artifactId>avaje-ebeanorm</artifactId>
             <version>6.17.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.avaje.ebeanorm</groupId>
+            <artifactId>avaje-ebeanorm-spring</artifactId>
+            <version>7.1.1</version>
         </dependency>
 
         <!-- testing -->
