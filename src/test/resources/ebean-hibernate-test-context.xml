@@ -1,0 +1,68 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <import resource="classpath:default-ebean-server.xml"/>
+
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!-- using dumb driver manager for experimentation -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+    </bean>
+
+    <bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- ebean setup -->
+
+    <bean id="ebeanJdbcServerConfig" parent="defaultEbeanServerConfig">
+        <property name="name" value="ebeanJdbc"/>
+        <property name="externalTransactionManager">
+            <bean class="com.avaje.ebean.springsupport.txn.SpringAwareJdbcTransactionManager"/>
+        </property>
+        <property name="classes">
+            <list>
+                <value>com.shibumi.research.orm.ebean.model.AnimalModel</value>
+            </list>
+        </property>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="ddlGenerate" value="false"/>
+        <property name="ddlRun" value="false"/>
+    </bean>
+
+    <bean id="ebeanJdbcTestEbeanServer" class="com.avaje.ebean.springsupport.factory.EbeanServerFactoryBean">
+        <property name="serverConfig" ref="ebeanJdbcServerConfig"/>
+    </bean>
+
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="true" />
+                <property name="generateDdl" value="false" />
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="ebeanHibernateSpringExplicitTransactionTest" class="com.shibumi.research.orm.hybrid.EbeanHibernateSpringExplicitTransactionIntegrationTest">
+        <property name="transactionManager" ref="jpaTransactionManager"/>
+        <property name="ebeanServer" ref="ebeanJdbcTestEbeanServer"/>
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        <property name="jdbcTemplate" ref="dataSource"/>
+    </bean>
+
+
+</beans>
