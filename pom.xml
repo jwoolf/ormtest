@@ -86,8 +86,11 @@
                 </dependencies>
                 <configuration>
                     <excludes>
-                        <exclude>com.shibumi.research.orm.ebean.*</exclude>
-                        <exclude>com.shibumi.research.orm.hibernate.*</exclude>
+                        <exclude>**/EbeanExplicitTransactionIntegrationTest.java</exclude>
+                        <exclude>**/HibernateExplicitTransactionIntegrationTest.java</exclude>
+                        <exclude>**/EbeanOverHibernateTransactionIntegrationTest.java</exclude>
+                        <exclude>**/JTAExplicitTransactionIntegrationTest.java</exclude>
+                        <exclude>**/EbeanJDBCExplicitTransactionIntegrationTest.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -103,7 +106,7 @@
                         </goals>
                         <configuration>
                             <includes>
-                                <include>com.shibumi.research.orm.ebean.*</include>
+                                <include>com.shibumi.research.orm.ebean.EbeanExplicitTransactionIntegrationTest</include>
                             </includes>
                         </configuration>
                     </execution>
@@ -156,10 +159,15 @@
 
         <!-- persistence.jta.driver -->
 
-        <dependency>
+        <!-- dependency>
             <groupId>org.jboss.jbossts</groupId>
             <artifactId>jbossjta</artifactId>
             <version>4.16.4.Final</version>
+        </dependency -->
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-jta</artifactId>
+            <version>4.0.4</version>
         </dependency>
 
         <!-- persistence.orm.hibernate -->
@@ -197,6 +205,11 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.3.1.RELEASE</version>
         </dependency>
 
     </dependencies>

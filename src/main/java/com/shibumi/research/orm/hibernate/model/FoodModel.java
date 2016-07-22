@@ -21,6 +21,7 @@ public class FoodModel {
     @Column(name = "calories")
     private int m_calories;
 
+    public FoodModel() {}
 
     public FoodModel(String food, String label, int calories) {
         m_food = food;
